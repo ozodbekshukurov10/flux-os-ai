@@ -1,0 +1,25 @@
+
+{
+  "short_name": "FluxOS",
+  "name": "Flux Cloud OS Enterprise",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5969/5969044.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5969/5969044.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "orientation": "portrait",
+  "scope": "/",
+  "description": "Enterprise Grade AI Workspace and OS Environment"
+}

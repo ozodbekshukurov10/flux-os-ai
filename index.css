@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --bg-dark: #000000;
+  --mica-bg: rgba(10, 10, 10, 0.75);
+  --accent-blue: #0078d4;
+  --win-border: rgba(255, 255, 255, 0.1);
+  --ios-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.win-titlebar {
+  -webkit-app-region: drag;
+}
+
+.win-btn {
+  -webkit-app-region: no-drag;
+}
+
+.mica-effect {
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+}
+
+.shadow-win {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}

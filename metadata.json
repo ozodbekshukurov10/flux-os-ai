@@ -1,0 +1,7 @@
+{
+  "name": "Flux Browser AI",
+  "description": "A high-performance AI-powered workspace for search, creation, and advanced reasoning using Gemini 3 models.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
