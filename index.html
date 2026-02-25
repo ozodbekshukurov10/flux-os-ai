@@ -22,7 +22,6 @@
             overflow: hidden;
         }
         
-        /* Oynasimon effektlar */
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
@@ -36,7 +35,6 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* Menyudagi faol tugma effekti */
         .nav-item { transition: all 0.3s ease; }
         .nav-item.active {
             background: rgba(255, 255, 255, 0.08);
@@ -49,24 +47,21 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: #3b82f6; /* Moviy nuqta */
+            background-color: #3b82f6;
             box-shadow: 0 0 8px #3b82f6;
         }
 
-        /* Matn gradienti */
         .text-gradient {
             background: linear-gradient(to right, #60a5fa, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
         
-        /* Animatsiyalar */
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -75,8 +70,6 @@
 
         .tab-content { display: none; }
         .tab-content.active { display: flex; animation: fadeIn 0.4s ease-out forwards; }
-
-        /* IDE Shrifti */
         .font-code { font-family: 'JetBrains Mono', monospace; }
     </style>
 </head>
@@ -89,32 +82,53 @@
                 <i data-lucide="shield" class="w-8 h-8 text-white"></i>
             </div>
             <h1 class="text-2xl font-bold tracking-tight mb-2">Flux OS Enterprise</h1>
-            <p class="text-sm text-gray-400 mb-8">Tizimga kirish uchun parolni kiriting</p>
+            <p class="text-sm text-gray-400 mb-6">Tizimga kirish uchun hisobingizni tasdiqlang</p>
             
-            <input type="password" id="password-input" placeholder="Parol (admin)" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors mb-4 text-center tracking-widest">
+            <!-- Email va Parol -->
+            <input type="email" id="email-input" placeholder="Elektron pochta" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors mb-3">
+            <input type="password" id="password-input" placeholder="Parol" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors mb-4">
             
-            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-colors">
+            <button onclick="loginWithEmail()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-colors mb-4">
                 Tizimga kirish
             </button>
-            <p id="login-error" class="text-red-400 text-xs mt-4 hidden">Noto'g'ri parol! (Parol: admin)</p>
+
+            <!-- Yoki -->
+            <div class="w-full flex items-center gap-3 mb-4 opacity-50">
+                <div class="flex-1 h-px bg-white/20"></div>
+                <span class="text-xs uppercase tracking-widest">yoki</span>
+                <div class="flex-1 h-px bg-white/20"></div>
+            </div>
+
+            <!-- Google orqali kirish -->
+            <button onclick="loginWithGoogle()" class="w-full bg-white hover:bg-gray-200 text-black font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-3">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Google orqali kirish
+            </button>
+
+            <p id="login-error" class="text-red-400 text-xs mt-4 hidden">Email yoki parol noto'g'ri!</p>
         </div>
     </div>
 
     <!-- ==================== ASOSIY TIZIM ==================== -->
     <div id="main-app" class="flex flex-col h-full opacity-0 pointer-events-none transition-opacity duration-1000">
         
-        <!-- YUQORI PANEL (Titlebar) -->
+        <!-- YUQORI PANEL -->
         <header class="h-12 border-b border-white/10 bg-[#0a0a0a] flex items-center justify-between px-4 shrink-0">
             <div class="flex items-center gap-3">
                 <i data-lucide="zap" class="text-blue-500 w-4 h-4"></i>
                 <div class="flex flex-col -space-y-1">
                     <span class="text-[10px] font-black tracking-widest uppercase">Flux OS v3.1 Enterprise</span>
-                    <span class="text-[8px] font-bold text-gray-500 uppercase">Build 25H2 • Root Identity Active</span>
+                    <span id="header-role-badge" class="text-[8px] font-bold text-gray-500 uppercase">Build 25H2 • Standard Node</span>
                 </div>
             </div>
             
             <div class="flex items-center gap-6">
-                <div class="flex items-center gap-2 text-[9px] font-bold uppercase text-indigo-400">
+                <div id="admin-badge" class="hidden items-center gap-2 text-[9px] font-bold uppercase text-indigo-400">
                     <i data-lucide="shield" class="w-3 h-3"></i> Admin Control
                 </div>
                 <div class="flex items-center gap-2 text-[9px] font-bold uppercase text-emerald-500">
@@ -126,7 +140,7 @@
                 <div class="flex items-center gap-4 text-gray-500">
                     <i data-lucide="minus" class="w-4 h-4 hover:text-white cursor-pointer"></i>
                     <i data-lucide="maximize-2" class="w-3 h-3 hover:text-white cursor-pointer"></i>
-                    <i data-lucide="x" class="w-4 h-4 hover:text-red-500 cursor-pointer" onclick="logout()"></i>
+                    <i data-lucide="log-out" class="w-4 h-4 hover:text-red-500 cursor-pointer" onclick="logout()" title="Tizimdan chiqish"></i>
                 </div>
             </div>
         </header>
@@ -137,12 +151,12 @@
             <aside class="w-64 border-r border-white/10 bg-[#050505] flex flex-col shrink-0 z-10">
                 <div class="p-6">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(79,70,229,0.4)]">
-                            <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                        <div id="sidebar-icon-bg" class="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
+                            <i id="sidebar-icon" data-lucide="user" class="w-5 h-5 text-white"></i>
                         </div>
                         <div>
-                            <h2 class="text-sm font-bold tracking-wide">FLUX ADMIN</h2>
-                            <p class="text-[9px] text-gray-500 uppercase tracking-widest">Enterprise Control</p>
+                            <h2 id="sidebar-role-title" class="text-sm font-bold tracking-wide">FLUX USER</h2>
+                            <p id="sidebar-role-subtitle" class="text-[9px] text-gray-500 uppercase tracking-widest">Standard Access</p>
                         </div>
                     </div>
                 </div>
@@ -166,16 +180,18 @@
                     <button onclick="switchTab('exe')" id="nav-exe" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-white relative">
                         <i data-lucide="monitor" class="w-4 h-4"></i> Desktop EXE
                     </button>
-                    <button onclick="switchTab('admin')" id="nav-admin" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-white relative">
-                        <i data-lucide="settings" class="w-4 h-4"></i> Admin CP
+                    
+                    <!-- ADMIN CP (Faqat admin uchun ko'rinadi) -->
+                    <button onclick="switchTab('admin')" id="nav-admin" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-white relative" style="display: none;">
+                        <i data-lucide="settings" class="w-4 h-4 text-red-400"></i> Admin CP
                     </button>
                 </nav>
             </aside>
 
-            <!-- MARKAZIY QISM (Asosiy Oyna) -->
+            <!-- MARKAZIY QISM -->
             <main class="flex-1 bg-[#0c0c0c] flex flex-col relative">
                 
-                <!-- Qidiruv paneli (Hamma tablarda ko'rinadi) -->
+                <!-- Qidiruv paneli -->
                 <div class="flex items-center gap-4 p-4 shrink-0 z-10 bg-[#0c0c0c]">
                     <div class="flex items-center gap-4 text-gray-500 px-2">
                         <i data-lucide="chevron-left" class="w-5 h-5 cursor-pointer hover:text-white"></i>
@@ -185,35 +201,24 @@
                     <div class="flex-1 relative">
                         <i data-lucide="globe" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500"></i>
                         <input type="text" placeholder="AI-dan so'rang yoki URL kiriting..." class="w-full bg-[#161618] border border-white/5 rounded-xl pl-12 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/50">
-                        <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] text-gray-500 font-mono bg-black/50 px-2 py-1 rounded">
-                            <span>⌘</span><span>K</span>
-                        </div>
                     </div>
                     <div class="flex items-center gap-3 ml-4">
                         <div class="text-right">
-                            <div class="text-[10px] font-bold uppercase tracking-widest">Ozodbek</div>
-                            <div class="text-[8px] text-gray-500 uppercase">Superuser</div>
+                            <div id="topbar-name" class="text-[10px] font-bold uppercase tracking-widest">Foydalanuvchi</div>
+                            <div id="topbar-role" class="text-[8px] text-gray-500 uppercase">User</div>
                         </div>
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold shadow-[0_0_10px_rgba(79,70,229,0.4)]">O</div>
+                        <div id="topbar-avatar" class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-xs font-bold">U</div>
                     </div>
                 </div>
 
-                <!-- ================= TAB KONTENTLARI ================= -->
+                <!-- TAB KONTENTLARI -->
                 <div class="flex-1 overflow-y-auto px-4 pb-12 relative">
                     
                     <!-- 1. ASOSIY TAB -->
                     <div id="tab-asosiy" class="tab-content active flex-col h-full">
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[400px]">
                             <div class="lg:col-span-2 glass-card rounded-3xl p-10 flex flex-col justify-center relative overflow-hidden">
-                                <div class="flex items-center gap-3 mb-6">
-                                    <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                                        <i data-lucide="zap" class="w-3 h-3"></i> Frankfurt Cluster Active
-                                    </span>
-                                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                                        <i data-lucide="shield-check" class="w-3 h-3"></i> Node Secured
-                                    </span>
-                                </div>
-                                <h1 class="text-5xl font-bold mb-4 tracking-tight">Salom, <span class="text-gradient">Ozodbek</span></h1>
+                                <h1 class="text-5xl font-bold mb-4 tracking-tight">Salom, <span id="greeting-name" class="text-gradient">Foydalanuvchi</span></h1>
                                 <p class="text-gray-400 text-lg max-w-md mb-8 leading-relaxed">Tizim barcha qurilmalaringiz bilan muvaffaqiyatli sinxronlandi. Bugun nima ustida ishlaymiz?</p>
                                 <div class="flex gap-4">
                                     <button onclick="switchTab('qidiruv')" class="bg-white text-black px-6 py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors flex items-center gap-2">
@@ -234,50 +239,26 @@
                         </div>
                     </div>
 
-                    <!-- 2. QIDIRUV TAB -->
+                    <!-- Boshqa tablar (Qidiruv, IDE, Chat, Browser, EXE, Admin) -->
                     <div id="tab-qidiruv" class="tab-content flex-col h-full items-center justify-center">
                         <div class="w-full max-w-3xl text-center">
                             <i data-lucide="search" class="w-16 h-16 text-blue-500 mx-auto mb-6 opacity-50"></i>
                             <h2 class="text-3xl font-bold mb-8">Global Qidiruv Tizimi</h2>
                             <div class="relative">
                                 <input type="text" placeholder="Fayllar, kodlar yoki internetdan qidiring..." class="w-full bg-[#161618] border border-white/10 rounded-2xl pl-6 pr-16 py-5 text-lg text-white focus:outline-none focus:border-blue-500 shadow-2xl">
-                                <button class="absolute right-3 top-1/2 -translate-y-1/2 bg-blue-600 p-3 rounded-xl hover:bg-blue-700 transition-colors">
-                                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 3. FLUX IDE TAB -->
                     <div id="tab-ide" class="tab-content flex-col h-full">
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-xl font-bold flex items-center gap-2"><i data-lucide="code-2" class="text-blue-500"></i> Flux IDE</h2>
-                            <button class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2">
-                                <i data-lucide="play" class="w-4 h-4"></i> Run Code
-                            </button>
                         </div>
                         <div class="flex-1 glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-                            <div class="bg-[#1e1e1e] px-4 py-2 border-b border-white/5 flex gap-2">
-                                <span class="text-sm text-gray-400">main.js</span>
-                                <span class="text-sm text-blue-400 border-b border-blue-400">index.html</span>
-                            </div>
-                            <textarea class="flex-1 bg-[#1e1e1e] text-gray-300 p-4 font-code text-sm focus:outline-none resize-none" spellcheck="false">
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Flux App</title>
-</head>
-<body>
-    <h1>Hello World</h1>
-    <script>
-        console.log("Flux IDE is running...");
-    </script>
-</body>
-</html></textarea>
+                            <textarea class="flex-1 bg-[#1e1e1e] text-gray-300 p-4 font-code text-sm focus:outline-none resize-none" spellcheck="false">// Kodingizni shu yerga yozing...</textarea>
                         </div>
                     </div>
 
-                    <!-- 4. AI CHAT TAB -->
                     <div id="tab-chat" class="tab-content flex-col h-full">
                         <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-4 glass-card rounded-2xl mb-4">
                             <div class="flex gap-4">
@@ -285,7 +266,7 @@
                                     <i data-lucide="bot" class="w-4 h-4 text-white"></i>
                                 </div>
                                 <div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm leading-relaxed">
-                                    Salom! Men Flux AI yordamchisiman. Sizga kod yozishda yoki ma'lumot topishda yordam bera olaman.
+                                    Salom! Men Flux AI yordamchisiman.
                                 </div>
                             </div>
                         </div>
@@ -297,86 +278,170 @@
                         </div>
                     </div>
 
-                    <!-- 5. BROWSER TAB -->
                     <div id="tab-browser" class="tab-content flex-col h-full">
-                        <div class="flex items-center gap-2 mb-4 bg-[#161618] p-2 rounded-xl border border-white/5">
-                            <button class="p-2 hover:bg-white/10 rounded-lg"><i data-lucide="arrow-left" class="w-4 h-4"></i></button>
-                            <button class="p-2 hover:bg-white/10 rounded-lg"><i data-lucide="rotate-cw" class="w-4 h-4"></i></button>
-                            <input type="text" value="https://en.wikipedia.org" class="flex-1 bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:outline-none">
-                        </div>
                         <div class="flex-1 glass-card rounded-2xl overflow-hidden border border-white/10 relative">
-                            <!-- Ba'zi saytlar iframe ni bloklaydi, shuning uchun wikipedia qoyildi -->
                             <iframe src="https://en.wikipedia.org/wiki/Main_Page" class="w-full h-full border-none bg-white"></iframe>
                         </div>
                     </div>
 
-                    <!-- 6. DESKTOP EXE TAB -->
                     <div id="tab-exe" class="tab-content flex-col h-full items-center justify-center text-center">
-                        <div class="glass-card p-10 rounded-3xl max-w-md w-full border border-blue-500/30 shadow-[0_0_50px_rgba(37,99,235,0.1)]">
+                        <div class="glass-card p-10 rounded-3xl max-w-md w-full border border-blue-500/30">
                             <i data-lucide="download-cloud" class="w-16 h-16 text-blue-500 mx-auto mb-6"></i>
                             <h2 class="text-2xl font-bold mb-2">Flux OS Desktop</h2>
-                            <p class="text-gray-400 text-sm mb-8">Windows uchun mahalliy (native) ilovani yuklab oling. Oflayn rejim va tezkor ishlash imkoniyati.</p>
-                            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2">
-                                <i data-lucide="monitor" class="w-5 h-5"></i> Yuklab olish (.exe)
-                            </button>
-                            <p class="text-xs text-gray-500 mt-4">Versiya: 3.1.0 | Hajmi: 142 MB</p>
+                            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl mt-4">Yuklab olish (.exe)</button>
                         </div>
                     </div>
 
-                    <!-- 7. ADMIN CP TAB -->
                     <div id="tab-admin" class="tab-content flex-col h-full">
-                        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="settings" class="text-red-500"></i> Boshqaruv Paneli</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="glass-card p-6 rounded-2xl border border-white/5">
-                                <h3 class="font-bold mb-4 text-gray-300">Tizim Sozlamalari</h3>
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm">Xavfsizlik rejimi (Lockdown)</span>
-                                        <div class="w-10 h-5 bg-red-500/20 rounded-full relative cursor-pointer border border-red-500/50">
-                                            <div class="w-3 h-3 bg-red-500 rounded-full absolute top-1 left-1"></div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm">Avtomatik sinxronizatsiya</span>
-                                        <div class="w-10 h-5 bg-emerald-500/20 rounded-full relative cursor-pointer border border-emerald-500/50">
-                                            <div class="w-3 h-3 bg-emerald-500 rounded-full absolute top-1 right-1"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="glass-card p-6 rounded-2xl border border-white/5">
-                                <h3 class="font-bold mb-4 text-gray-300">Xavfli Amallar</h3>
-                                <div class="space-y-3">
-                                    <button class="w-full bg-white/5 hover:bg-white/10 border border-white/10 py-2.5 rounded-xl text-sm transition-colors">Keshni tozalash</button>
-                                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 py-2.5 rounded-xl text-sm transition-colors">Serverni qayta ishga tushirish</button>
-                                </div>
-                            </div>
+                        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="settings" class="text-red-500"></i> Boshqaruv Paneli (Faqat Admin uchun)</h2>
+                        <div class="glass-card p-6 rounded-2xl border border-white/5">
+                            <h3 class="font-bold mb-4 text-gray-300">Tizim Sozlamalari</h3>
+                            <p class="text-sm text-gray-400">Bu bo'lim faqat ozodbek201024@gmail.com hisobi orqali kirganda ko'rinadi.</p>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- ENG PASTKI STATUS BAR -->
+                <!-- STATUS BAR -->
                 <div class="absolute bottom-0 left-0 right-0 h-8 bg-[#0a0a0a] border-t border-white/10 flex items-center justify-between px-4 text-[9px] font-bold uppercase tracking-widest text-gray-500 z-20">
                     <div class="flex items-center gap-6">
-                        <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_#10b981]"></div> System: Stable</span>
-                        <span class="flex items-center gap-2"><i data-lucide="cpu" class="w-3 h-3"></i> Load: 12%</span>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <span>Encryption: AES-256</span>
-                        <span class="text-blue-500">Flux OS Kernel 3.1</span>
+                        <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> System: Stable</span>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- JavaScript Mantiq -->
     <script>
-        // Ikonkalarni yuklash
         lucide.createIcons();
 
-        // Soat va Sanani yangilash
+        // --- AUTHENTICATION & LOCALSTORAGE LOGIC ---
+        
+        // Sahifa yuklanganda foydalanuvchini tekshirish
+        window.onload = function() {
+            const savedUser = localStorage.getItem('flux_user');
+            if (savedUser) {
+                // Agar oldin kirgan bo'lsa, to'g'ridan-to'g'ri tizimga o'tkazish
+                const user = JSON.parse(savedUser);
+                applyUserRole(user);
+                showMainApp();
+            } else {
+                // Aks holda login oynasini ko'rsatish
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('login-screen').style.opacity = '1';
+            }
+        };
+
+        // Email va Parol orqali kirish
+        function loginWithEmail() {
+            const email = document.getElementById('email-input').value.trim();
+            const pass = document.getElementById('password-input').value.trim();
+            const errorEl = document.getElementById('login-error');
+
+            if (!email || !pass) {
+                errorEl.textContent = "Barcha maydonlarni to'ldiring!";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            let user = { email: email, role: 'user', name: email.split('@')[0] };
+
+            // ADMIN TEKSHIRUVI
+            if (email === 'ozodbek201024@gmail.com') {
+                if (pass === 'ozodbek2010') {
+                    user.role = 'admin';
+                    user.name = 'Ozodbek';
+                } else {
+                    errorEl.textContent = "Admin paroli noto'g'ri!";
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+            }
+
+            // Ma'lumotni saqlash va tizimga kirish
+            localStorage.setItem('flux_user', JSON.stringify(user));
+            applyUserRole(user);
+            showMainApp();
+        }
+
+        // Google orqali kirish (Simulyatsiya - User huquqi bilan)
+        function loginWithGoogle() {
+            const googleUser = { email: 'google_user@gmail.com', role: 'user', name: 'Google User' };
+            localStorage.setItem('flux_user', JSON.stringify(googleUser));
+            applyUserRole(googleUser);
+            showMainApp();
+        }
+
+        // Tizimdan chiqish
+        function logout() {
+            localStorage.removeItem('flux_user'); // Xotiradan o'chirish
+            
+            const mainApp = document.getElementById('main-app');
+            mainApp.style.opacity = '0';
+            mainApp.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('email-input').value = '';
+                document.getElementById('password-input').value = '';
+                document.getElementById('login-error').classList.add('hidden');
+                
+                const loginScreen = document.getElementById('login-screen');
+                loginScreen.style.display = 'flex';
+                setTimeout(() => { loginScreen.style.opacity = '1'; }, 50);
+                
+                switchTab('asosiy');
+            }, 500);
+        }
+
+        // Foydalanuvchi huquqlariga qarab UI ni o'zgartirish
+        function applyUserRole(user) {
+            document.getElementById('greeting-name').textContent = user.name;
+            document.getElementById('topbar-name').textContent = user.name;
+            document.getElementById('topbar-avatar').textContent = user.name.charAt(0).toUpperCase();
+
+            if (user.role === 'admin') {
+                // ADMIN UI
+                document.getElementById('topbar-role').textContent = 'Superuser';
+                document.getElementById('topbar-avatar').className = 'w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold shadow-[0_0_10px_rgba(79,70,229,0.4)]';
+                
+                document.getElementById('sidebar-role-title').textContent = 'FLUX ADMIN';
+                document.getElementById('sidebar-role-subtitle').textContent = 'Enterprise Control';
+                document.getElementById('sidebar-icon-bg').className = 'w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(79,70,229,0.4)]';
+                document.getElementById('sidebar-icon').setAttribute('data-lucide', 'shield');
+                
+                document.getElementById('admin-badge').style.display = 'flex';
+                document.getElementById('nav-admin').style.display = 'flex'; // Admin CP ni ko'rsatish
+                document.getElementById('header-role-badge').textContent = 'Build 25H2 • Root Identity Active';
+            } else {
+                // USER UI
+                document.getElementById('topbar-role').textContent = 'Standard User';
+                document.getElementById('topbar-avatar').className = 'w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-xs font-bold';
+                
+                document.getElementById('sidebar-role-title').textContent = 'FLUX USER';
+                document.getElementById('sidebar-role-subtitle').textContent = 'Standard Access';
+                document.getElementById('sidebar-icon-bg').className = 'w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center';
+                document.getElementById('sidebar-icon').setAttribute('data-lucide', 'user');
+                
+                document.getElementById('admin-badge').style.display = 'none';
+                document.getElementById('nav-admin').style.display = 'none'; // Admin CP ni yashirish
+                document.getElementById('header-role-badge').textContent = 'Build 25H2 • Standard Node';
+            }
+            lucide.createIcons(); // Ikonkalarni yangilash
+        }
+
+        // Asosiy oynani ko'rsatish animatsiyasi
+        function showMainApp() {
+            document.getElementById('login-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                const mainApp = document.getElementById('main-app');
+                mainApp.style.opacity = '1';
+                mainApp.style.pointerEvents = 'auto';
+            }, 500);
+        }
+
+        // --- BOSHQA FUNKSIYALAR (Soat, Tablar, Chat) ---
+        
         function updateTime() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
@@ -385,68 +450,54 @@
             const dateStr = `${months[now.getMonth()]} ${now.getDate()}, ${days[now.getDay()]}`;
 
             document.getElementById('clock-top').textContent = timeStr;
-            const mainTime = document.getElementById('main-time');
-            if(mainTime) mainTime.textContent = timeStr;
-            const mainDate = document.getElementById('main-date');
-            if(mainDate) mainDate.textContent = dateStr;
+            if(document.getElementById('main-time')) document.getElementById('main-time').textContent = timeStr;
+            if(document.getElementById('main-date')) document.getElementById('main-date').textContent = dateStr;
         }
         setInterval(updateTime, 1000);
         updateTime();
 
-        // Tablarni almashtirish funksiyasi
         function switchTab(tabId) {
-            // Hamma tablarni yashirish
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            // Hamma menyu tugmalaridan 'active' ni olib tashlash
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.classList.remove('active');
                 btn.classList.remove('text-white');
                 btn.classList.add('text-gray-400');
             });
 
-            // Tanlangan tabni ko'rsatish
             document.getElementById('tab-' + tabId).classList.add('active');
-            
-            // Tanlangan menyu tugmasini faollashtirish
             const activeBtn = document.getElementById('nav-' + tabId);
             activeBtn.classList.add('active');
             activeBtn.classList.remove('text-gray-400');
             activeBtn.classList.add('text-white');
         }
 
-        // AI Chat funksiyasi
         function sendChatMessage() {
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             if (!message) return;
 
             const chatBox = document.getElementById('chat-box');
-            
-            // Foydalanuvchi xabari
+            const user = JSON.parse(localStorage.getItem('flux_user'));
+            const initial = user ? user.name.charAt(0).toUpperCase() : 'U';
+            const color = user && user.role === 'admin' ? 'bg-indigo-600' : 'bg-gray-600';
+
             const userDiv = document.createElement('div');
             userDiv.className = 'flex gap-4 flex-row-reverse';
             userDiv.innerHTML = `
-                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 text-xs font-bold">O</div>
-                <div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] text-sm leading-relaxed">
-                    ${message}
-                </div>
+                <div class="w-8 h-8 rounded-full ${color} flex items-center justify-center shrink-0 text-xs font-bold">${initial}</div>
+                <div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] text-sm leading-relaxed">${message}</div>
             `;
             chatBox.appendChild(userDiv);
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // AI javobi (Simulyatsiya)
             setTimeout(() => {
                 const aiDiv = document.createElement('div');
                 aiDiv.className = 'flex gap-4';
                 aiDiv.innerHTML = `
-                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
-                        <i data-lucide="bot" class="w-4 h-4 text-white"></i>
-                    </div>
+                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0"><i data-lucide="bot" class="w-4 h-4 text-white"></i></div>
                     <div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm leading-relaxed text-gray-300">
-                        Bu tizim hozircha Frontend (HTML/CSS/JS) rejimida ishlamoqda. Haqiqiy AI ulanishi uchun backend kerak bo'ladi.
+                        Xabaringiz qabul qilindi.
                     </div>
                 `;
                 chatBox.appendChild(aiDiv);
@@ -458,44 +509,6 @@
         document.getElementById('chat-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') sendChatMessage();
         });
-
-        // Login funksiyasi
-        function login() {
-            const pass = document.getElementById('password-input').value;
-            if (pass === 'admin') {
-                document.getElementById('login-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-screen').style.display = 'none';
-                    const mainApp = document.getElementById('main-app');
-                    mainApp.style.opacity = '1';
-                    mainApp.style.pointerEvents = 'auto';
-                }, 500);
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
-        }
-
-        document.getElementById('password-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') login();
-        });
-
-        // Chiqish funksiyasi
-        function logout() {
-            const mainApp = document.getElementById('main-app');
-            mainApp.style.opacity = '0';
-            mainApp.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                document.getElementById('password-input').value = '';
-                document.getElementById('login-error').classList.add('hidden');
-                const loginScreen = document.getElementById('login-screen');
-                loginScreen.style.display = 'flex';
-                setTimeout(() => { loginScreen.style.opacity = '1'; }, 50);
-                
-                // Asosiy tabga qaytarish
-                switchTab('asosiy');
-            }, 1000);
-        }
     </script>
 </body>
 </html>
